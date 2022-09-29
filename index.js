@@ -1,6 +1,7 @@
 // Import express library 
 const express = require("express");
 const path = require("path")
+const env = require("dotenv");
 
 // Import mongooseJS
 const mongoose = require("mongoose");
@@ -35,16 +36,30 @@ app.use(express.urlencoded({
 // Define static file
 app.use(express.static(path.join(__dirname, "/views")))
 
+env.config();
+
 // Define port
 const port = 8000;
 
 // Connect to mongoDB
-mongoose.connect("mongodb://localhost:27017/CRUS_LuckyDice", (err) => {
-    if (err) {
-        throw err;
-    }
-    console.log("Connect MongoDB successfully!");
-})
+// mongoose.connect("mongodb://localhost:27017/CRUS_LuckyDice", (err) => {
+//     if (err) {
+//         throw err;
+//     }
+//     console.log("Connect MongoDB successfully!");
+// })
+
+mongoose
+    .connect(
+        `mongodb+srv://minhduy:123@lucky-dice-casino.wd5cmgn.mongodb.net/?retryWrites=true&w=majority`,
+        {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        }
+    )
+    .then(() => {
+        console.log("Database connected");
+    });
 
 // Console.log current time when send a request
 app.use((request, response, next) => {
